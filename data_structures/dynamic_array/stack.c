@@ -24,19 +24,22 @@ void pop(int *size, int **arr) {
 
     } else if (*size == 0) { //you shouldnt do realloc(_, 0) apparently 
         *arr = NULL;
-        (*size)--;
     }
 
 }
 
-void insert(int value, int index, int *size, int **arr) { //
-    (*size)++;
-    int *temp = realloc(*arr, *size * sizeof(int));
+void insert(int value, int index, int *size, int **arr) { 
+    if (index < 0 || index > *size) return;
+
+
+    int *temp = realloc(*arr, (*size+1) * sizeof(int));
+
+    (*size)++; //if realloc fails, size wont change
 
     if (temp != NULL) { //if realloc changes address, temp[i+1] = (*arr)[i]; will point to freed memeory
 
-        for (int i = index; i < *size-1; i++) {
-            temp[i+1] = temp[i];
+        for (int i = *size-1; i > index; i--) {
+            temp[i] = temp[i-1];
         }
 
         temp[index] = value;
