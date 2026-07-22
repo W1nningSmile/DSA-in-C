@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "stack.c"
 
 void append(int x, int *size, int **arr) {
 
