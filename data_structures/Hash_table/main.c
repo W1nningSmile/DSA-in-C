@@ -1,0 +1,135 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "stack.h"
+
+#define BUFFER_SIZE 1024
+
+LinkedList linked_list(char *key, char *value) {
+    Node *Head = malloc(sizeof(Node));
+
+    Head->key = key;
+    Head->value = value;
+    Head->next = NULL;
+
+    LinkedList list = {
+        .head = Head,
+        .length = 1
+    };
+
+    return list;
+}
+
+int table_size = 10;
+
+
+int main() {
+    LinkedList ptr_array[table_size]; 
+
+    for (int i = 0; i < table_size; i++) {
+        ptr_array[i] = (LinkedList){0}; // Initialize each linked list
+    }
+
+    while (1) {
+        //key
+        printf("Enter a key: ");
+        char *buffer_key = malloc(BUFFER_SIZE);
+
+        if (!fgets(buffer_key, BUFFER_SIZE, stdin)) {
+            free(buffer_key);
+            break;
+        }
+        buffer_key[strcspn(buffer_key, "\n")] = 0; // Remove newline character
+        printf("You entered: %s\n", buffer_key);
+
+        //value
+        printf("Enter a value to hash: ");
+        char *value_buffer = malloc(BUFFER_SIZE);
+
+        if (!fgets(value_buffer, BUFFER_SIZE, stdin)) {
+            free(value_buffer);
+            break;
+        }
+        value_buffer[strcspn(value_buffer, "\n")] = 0; // Remove newline character
+        printf("You entered: %s\n", value_buffer);
+
+
+
+        long long int x = hash_function(buffer_key, 10);
+        printf("Hash value: %lld\n", x);
+
+        Node *new_tail1 = create_node(buffer_key, value_buffer);
+        if (new_tail1 == NULL) {
+            fprintf(stderr, "Memory allocation failed for new_tail1\n");
+            free(buffer_key);
+            free(value_buffer);
+            continue;
+        }
+        printf("%p\n", new_tail1);
+
+        if (ptr_array[x].head == NULL) {
+            ptr_array[x] = linked_list(buffer_key, value_buffer);
+            printf("Created new linked list at index %lld with key %s and value %s\n", x, ptr_array[x].head->key, ptr_array[x].head->value);
+        } else {
+            Node *current = ptr_array[x].head;
+            while (current->next != NULL) {
+                current = current->next;
+            }
+
+            current->next = new_tail1;
+            ptr_array[x].length++;
+
+        }
+
+        for (int i = 0; i < table_size; i++) {
+            printf("\n\nLinked List at index %d:\n", i);
+            loop(ptr_array, i);
+        }
+
+
+
+    }
+}
+
+
+
+Node *create_node(char *key, char *value) {
+    Node *new_node = malloc(sizeof(Node));
+    new_node->key = key;
+    new_node->value = value;
+    new_node->next = NULL;
+    return new_node;
+}
+
+void loop(LinkedList *ptr_array, int x) {
+    int count = 0;
+
+    for (Node *ptr = ptr_array[x].head; ptr != NULL; ptr = ptr->next) {
+        printf("Node %d: Key: %s, Value: %s\n", count, ptr->key, ptr->value);
+        count++;
+    }
+
+    printf("\n\n");
+}
+
+void enumerate_linked_list(Node *head) {
+    Node *current = head;
+    while (current != NULL) {
+        printf("Key: %s, Value: %s\n", current->key, current->value);
+        current = current->next;
+    }
+}
+
+
+long long int hash_function(char *key, int table_size) {
+    unsigned long long int hash = 0;
+
+    for (int i = 0; key[i] != '\0'; i++) {
+        hash = key[i] * 31 + hash;
+        printf("Hash after processing character '%c': %llu\n", key[i], hash);
+    }
+
+    hash = hash % table_size;
+    return hash;
+}
