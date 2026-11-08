@@ -89,8 +89,8 @@ Hashing a key takes **O(k)** time for a key of length `k`. Inserting walks to th
 
 - Only insertion is supported: there is no lookup, update, or delete, and duplicate keys are stored as separate nodes. (for now, will probably be added later)
 - The hash equals 31 × (sum of the characters), so anagrams always collide (`cat` and `act` both map to bucket 2).
-- The table size is fixed at 10, and `hash_function` is called with a hardcoded `10` rather than the `table_size` variable. (will change next patch)
-- Memory is never freed. When a bucket is empty, the extra node created by `create_node` is also leaked. (will change next patch)
+- The table size is fixed at 10, and `hash_function` is called with a hardcoded `10` rather than the `table_size` variable. **(will change next patch)**
+- Memory is never freed. When a bucket is empty, the extra node created by `create_node` is also leaked. **(will change next patch)**
 - `malloc` results in `create_node` and `linked_list` are not checked for `NULL`, so the `NULL` check in `main.c` can never trigger.
 - Input longer than 1023 characters spills into the next prompt. 
 - `add_tail` is declared but never defined.
