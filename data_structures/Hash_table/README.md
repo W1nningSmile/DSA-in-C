@@ -43,13 +43,12 @@ typedef struct {
 | `create_node(char *key, char *value)` | Allocates a node with `next` set to `NULL`. |
 | `linked_list(char *key, char *value)` | Builds a `LinkedList` with a single head node and length 1. |
 | `loop(LinkedList *ptr_array, int x)` | Prints every node in bucket `x`. |
-| `enumerate_linked_list(Node *head)` | Prints every node starting from `head`. Defined in `stack.c` but currently unused and not declared in `stack.h`. |
-| `add_tail(Node **tail, Node *new_tail, int *length)` | Declared in `stack.h` but not implemented. |
+| `enumerate_linked_list(Node *head)` | Prints every node starting from `head`. Defined in `stack.c` but **currently unused and not declared in `stack.h`.** |
 
 
 ## Example
 
-Inputs (key, then value):
+Inputs(key (string) , Value (string))
 
 ```
 cat   → meow
@@ -94,3 +93,10 @@ Hashing a key takes **O(k)** time for a key of length `k`. Inserting walks to th
 - `malloc` results in `create_node` and `linked_list` are not checked for `NULL`, so the `NULL` check in `main.c` can never trigger.
 - Input longer than 1023 characters spills into the next prompt. 
 - `add_tail` is declared but never defined.
+
+## Next Steps
+
+- Fix bugs and check for memory leaks
+- Put the new value of a bucket in its head instead of it tail **(to reduce it to a complexity of O(1) from O(N))**
+- Clean up code from unused/redundant stuff
+- Optimise certain parts for speed and safety
