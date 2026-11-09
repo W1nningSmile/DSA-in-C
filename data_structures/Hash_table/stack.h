@@ -16,7 +16,6 @@ typedef struct {
 
 Node *create_node(char *key, char *value);
 LinkedList linked_list(char *key, char *value);
-void add_tail(Node **tail, Node *new_tail, int *length);
 long long int hash_function(char *key, int table_size);
 void loop(LinkedList *ptr_array, int x);
 
